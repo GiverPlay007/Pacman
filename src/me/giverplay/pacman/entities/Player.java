@@ -3,9 +3,13 @@ package me.giverplay.pacman.entities;
 import static me.giverplay.pacman.world.World.canMove;
 
 import java.awt.Graphics;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 
 import me.giverplay.pacman.Game;
 import me.giverplay.pacman.graphics.GraphicsUtils;
+import me.giverplay.pacman.sound.Sound;
 
 public class Player extends Entity
 {	
@@ -114,7 +118,25 @@ public class Player extends Entity
 	@Override
 	public void render(Graphics g)
 	{
-		g.drawImage(GraphicsUtils.rotate(Entity.SPRITE_PLAYER[anim], dir), getX(), getY(), null);
+		BufferedImage image = SPRITE_PLAYER[anim].getSubimage(0, 0, 16, 16);
+		
+		if(dir != DIR_RIGHT)
+		{
+			if(dir == DIR_LEFT)
+			{
+				AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+				tx.translate(-image.getWidth(), 0);
+				AffineTransformOp op = new AffineTransformOp(tx,
+						AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+				image = op.filter(image, null);
+			}
+			else
+			{
+				image = GraphicsUtils.rotate(image, dir);
+			}
+		}
+		
+		g.drawImage(image, getX(), getY(), null);
 	}
 	
 	public boolean walkingRight()
@@ -225,6 +247,8 @@ public class Player extends Entity
 		
 		if(vida < 0)
 			vida = 0;
+		
+		Sound.hit.play();
 	}
 	
 	public boolean isJumping()

@@ -1,6 +1,9 @@
 package me.giverplay.pacman.entities;
 
+import java.awt.Graphics;
+
 import me.giverplay.pacman.Game;
+import me.giverplay.pacman.sound.Sound;
 
 public class Fruta extends Entity implements Collectible
 {
@@ -12,6 +15,7 @@ public class Fruta extends Entity implements Collectible
 	public void collect() 
 	{
 		Game.getGame().getPlayer().addFruit();
+		Sound.collect.play();
 		destroy();
 	}
 	
@@ -19,5 +23,11 @@ public class Fruta extends Entity implements Collectible
 	public void destroy()
 	{
 		Game.getGame().getFruits().remove(this);
+	}
+	
+	@Override
+	public void render(Graphics g)
+	{
+		g.drawImage(super.getSprite(), getX() + 4, getY() + 4, 12, 12, null);
 	}
 }

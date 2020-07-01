@@ -39,13 +39,13 @@ public class Enemy extends Entity
 			ghostM = !ghostM;
 		}
 		
+		if(ghostM)
+			return;
+		
 		if(isCollifingEntity(this, game.getPlayer()))
 		{
 			player.damage();
 		}
-		
-		if(ghostM)
-			return;
 		
 		if(path == null || path.size() == 0)
 		{
@@ -59,7 +59,7 @@ public class Enemy extends Entity
 	public void render(Graphics g)
 	{
 		super.render(g);
-		
+		 
 		if(ghostM)
 			g.drawImage(GHOST, getX(), getY(), null);
 	}

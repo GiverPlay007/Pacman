@@ -12,7 +12,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Sound
 {
-	public static Clips theme = load("/calm3.wav", 1);
+	public static Clips collect = load("/collect.wav", 1);
+	public static Clips hit = load("/hit.wav", 1);
 		
 	public static class Clips
 	{
