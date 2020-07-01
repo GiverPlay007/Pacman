@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JFrame;
 
@@ -33,6 +32,7 @@ public class Game extends Canvas implements Runnable
 	public static final int SCALE = 2;
 	
 	private List<Entity> entities;
+	private List<Entity> frutas;
 	
 	private static Game game;
 	private static int FPS = 0;
@@ -44,12 +44,12 @@ public class Game extends Canvas implements Runnable
 	
 	private BufferedImage image;
 	private Thread thread;
-	private Random random;
 	private JFrame frame;
 	
 	private boolean isRunning = false;
 	private boolean showGameOver = true;
 	private boolean morreu = false;
+	private boolean ganhou = false;
 	
 	private int gameOverFrames = 0;
 	private int maxGameOverFrames = 30;
@@ -91,12 +91,11 @@ public class Game extends Canvas implements Runnable
 	{
 		game = this;
 		
-		random = new Random();
-		
 		entities = new ArrayList<Entity>();
+		frutas = new ArrayList<>();
 		
 		sprite = new Spritesheet("/Spritesheet.png");
-		player = new Player(1, 1, 16, 16, sprite.getSprite(0, 16, 16, 16));
+		player = new Player(1, 1, 16, 16);
 		world = new World("/World.png");
 		
 		ui = new UI();
@@ -104,7 +103,8 @@ public class Game extends Canvas implements Runnable
 		entities.add(player);
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_BGR);
 		
-		//Sound.theme.play();
+		ganhou = false;
+		morreu = false;
 	}
 	
 	// Metodos de Controle do Fluxo | TODO
@@ -183,9 +183,15 @@ public class Game extends Canvas implements Runnable
 	
 	public synchronized void tick()
 	{
-		if(!morreu)
+		if(!morreu && !ganhou)
 		{
 			for(int i = 0; i < entities.size(); i++) entities.get(i).tick();
+			for(int i = 0; i < frutas.size(); i++) frutas.get(i).tick();
+			
+			if(frutas.size() == 0)
+			{
+				ganhou = true;
+			}
 		}
 	}
 	
@@ -210,10 +216,8 @@ public class Game extends Canvas implements Runnable
 		
 		Collections.sort(entities, Enemy.sortDepth);
 		
-		for(Entity e : entities)
-		{
-			e.render(g);
-		}
+		for(int i = 0; i < frutas.size(); i++) frutas.get(i).render(g);
+		for(int i = 0; i < entities.size(); i++) entities.get(i).render(g);
 		
 		/******/
 		
@@ -223,17 +227,17 @@ public class Game extends Canvas implements Runnable
 		
 		renderSmooth(g);
 		
-		if(morreu)
+		if(morreu || ganhou)
 		{
 			Graphics2D g2 = (Graphics2D) g;
 			
 			g2.setColor(new Color(0, 0, 0, 100));
 			g2.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
 			
-			String txt = "Game Over";
+			String txt = morreu ? "Game Over" : "Você Venceu!";
 			g.setColor(Color.WHITE);
 			g.setFont(FontUtils.getFont(32, Font.BOLD));
-			g.drawString(txt, (WIDTH * SCALE - g.getFontMetrics(g.getFont()).stringWidth(txt)) / 2, WIDTH * SCALE / 2);
+			g.drawString(txt, (WIDTH * SCALE - g.getFontMetrics(g.getFont()).stringWidth(txt)) / 2, HEIGHT * SCALE / 2);
 			
 			gameOverFrames++;
 			
@@ -273,11 +277,6 @@ public class Game extends Canvas implements Runnable
 		return this.player;
 	}
 	
-	public Random getRandom()
-	{
-		return this.random;
-	}
-	
 	public Spritesheet getSpritesheet()
 	{
 		return this.sprite;
@@ -296,5 +295,20 @@ public class Game extends Canvas implements Runnable
 	public boolean morreu()
 	{
 		return this.morreu;
+	}
+	
+	public boolean venceu()
+	{
+		return this.ganhou;
+	}
+	
+	public List<Entity> getFruits()
+	{
+		return this.frutas;
+	}
+
+	public void matar()
+	{
+		this.morreu = true;
 	}
 }

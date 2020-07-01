@@ -3,11 +3,16 @@ package me.giverplay.pacman.graphics;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 import me.giverplay.pacman.Game;
+import me.giverplay.pacman.entities.Entity;
 
 public class UI
 {
+	private static BufferedImage cor1 = Game.getGame().getSpritesheet().getSprite(48, 0, 8, 8);
+	private static BufferedImage cor2 = Game.getGame().getSpritesheet().getSprite(56, 0, 8, 8);
+	
 	private Game game;
 	
 	public UI()
@@ -17,19 +22,18 @@ public class UI
 	
 	public void render(Graphics g)
 	{
+		g.drawImage(Entity.SPRITE_FRUTA[0], 2, Game.HEIGHT * 2 - 34, 28, 34, null);
 		
+		g.setColor(Color.yellow);
+		g.setFont(FontUtils.getFont(14, Font.BOLD));
+		g.drawString(game.getPlayer().getFruits() + "/" + (game.getFruits().size() + game.getPlayer().getFruits()), 36, Game.HEIGHT * 2 - 8);
 		
-		g.setColor(Color.RED);
-		g.fillRect(10, 9, (int) (game.getPlayer().getMaxLife() * 0.70) * 2, 9 * 2);
+		int coe = game.getPlayer().getMaxLife() - game.getPlayer().getLife();
 		
-		g.setColor(Color.GREEN);
-		g.fillRect(10, 9, (int) (game.getPlayer().getLife() * 0.70) * 2, 9 * 2);
+		for(int i = game.getPlayer().getMaxLife() * 8; i >= 0; i -= 10)
+		{
+			g.drawImage(i <= coe * 8 ? cor2 : cor1, Game.WIDTH * 2 - 32 - i * 4, Game.HEIGHT * 2 - 32, 28, 28, null);
+		}
 		
-		g.setColor(new Color(20, 50, 20));
-		g.setFont(FontUtils.getFont(8, Font.PLAIN));
-		g.drawString(game.getPlayer().getLife() + " / " + game.getPlayer().getMaxLife(), 26, 22);
-		
-		g.setColor(Color.BLACK);
-		g.drawRect(9, 8, 70, 10 * 2);
 	}
 }

@@ -1,10 +1,13 @@
 package me.giverplay.pacman.entities;
 
+import static me.giverplay.pacman.world.World.TILE_SIZE;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 import me.giverplay.pacman.Game;
 import me.giverplay.pacman.algorithms.Node;
@@ -13,13 +16,35 @@ import me.giverplay.pacman.world.World;
 
 public class Entity
 {
+	public static final BufferedImage[] SPRITE_PLAYER;
+	public static final BufferedImage[] SPRITE_GHOST;
+	public static final BufferedImage[] SPRITE_FRUTA;
+	
+	public static final BufferedImage GHOST = Game.getGame().getSpritesheet().getSprite(TILE_SIZE * 2, 0, TILE_SIZE, TILE_SIZE);
+	
+	static
+	{
+		SPRITE_GHOST = new BufferedImage[4];
+		SPRITE_FRUTA = new BufferedImage[4];
+		SPRITE_PLAYER = new BufferedImage[4];
+		
+		for(int i = 0; i < 4; i++)
+		{
+			SPRITE_PLAYER[i] = Game.getGame().getSpritesheet().getSprite(i * TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE);
+			SPRITE_FRUTA[i] = Game.getGame().getSpritesheet().getSprite(i * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+			SPRITE_GHOST[i] = Game.getGame().getSpritesheet().getSprite(i * TILE_SIZE, 3 * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+		}
+	}
+	
 	private static Game game = Game.getGame();
 	
 	protected List<Node> path;
+	protected static Random random = new Random();
 	
 	protected double x;
 	protected double y;
 	protected double speed;
+	
 	private int width;
 	private int height;
 	private int depth;

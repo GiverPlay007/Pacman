@@ -2,12 +2,10 @@ package me.giverplay.pacman.events;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import me.giverplay.pacman.Game;
 
-public class Listeners implements MouseListener, KeyListener
+public class Listeners implements KeyListener
 {
 	private Game game;
 	
@@ -15,13 +13,12 @@ public class Listeners implements MouseListener, KeyListener
 	{
 		this.game = game;
 		this.game.addKeyListener(this);
-		this.game.addMouseListener(this);
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent event)
 	{
-		if(!game.morreu())
+		if(!game.morreu() && !game.venceu())
 		{
 			if(event.getKeyCode() == KeyEvent.VK_SPACE)
 			{
@@ -80,40 +77,11 @@ public class Listeners implements MouseListener, KeyListener
 			game.getPlayer().setWalkingDown(false);
 		}
 	}
-	
-	@Override
-	public void keyTyped(KeyEvent event)
-	{
 
-	}
-	
 	@Override
-	public void mouseClicked(MouseEvent e)
+	public void keyTyped(KeyEvent arg0)
 	{
-
-	}
-	
-	@Override
-	public void mouseEntered(MouseEvent e)
-	{
-
-	}
-	
-	@Override
-	public void mouseExited(MouseEvent e)
-	{
-
-	}
-	
-	@Override
-	public void mousePressed(MouseEvent e)
-	{
+		// TODO Auto-generated method stub
 		
-	}
-	
-	@Override
-	public void mouseReleased(MouseEvent e)
-	{
-
 	}
 }

@@ -7,6 +7,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import me.giverplay.pacman.Game;
+import me.giverplay.pacman.entities.Enemy;
+import me.giverplay.pacman.entities.Fruta;
 import me.giverplay.pacman.utils.Cores;
 
 public class World
@@ -52,8 +54,12 @@ public class World
 							tiles[index] = new WallTile(xx * TILE_SIZE, yy * TILE_SIZE);
 							break;
 							
-						case Cores.MAPA_INIMIGO:
-							//TODO
+						case Cores.MAPA_GHOST:
+							game.getEntities().add(new Enemy(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE));
+							break;
+						
+						case Cores.MAPA_FRUTA:
+							game.getFruits().add(new Fruta(xx * TILE_SIZE, yy * TILE_SIZE));
 							break;
 							
 						case Cores.MAPA_JOGADOR:
