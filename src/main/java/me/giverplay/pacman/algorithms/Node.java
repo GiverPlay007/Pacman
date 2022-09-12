@@ -1,70 +1,39 @@
 package me.giverplay.pacman.algorithms;
 
-public class Node
-{
-	
-	private Vector2i tile;
-	
-	public Vector2i getTile()
-	{
-		return tile;
-	}
+public class Node {
 
-	public void setTile(Vector2i tile)
-	{
-		this.tile = tile;
-	}
+  private final Vector2i tile;
+  private final Node parent;
 
-	public Node getParent()
-	{
-		return parent;
-	}
+  private final double fCost;
+  private final double gCost;
+  private final double hCost;
 
-	public void setParent(Node parent)
-	{
-		this.parent = parent;
-	}
+  public Node(Vector2i tile, Node parent, double gCost, double hCost) {
+    this.tile = tile;
+    this.parent = parent;
+    this.gCost = gCost;
+    this.hCost = hCost;
+    this.fCost = gCost + hCost;
+  }
 
-	public double getfCost()
-	{
-		return fCost;
-	}
+  public Vector2i getTile() {
+    return tile;
+  }
 
-	public void setfCost(double fCost)
-	{
-		this.fCost = fCost;
-	}
+  public Node getParent() {
+    return parent;
+  }
 
-	public double getgCost()
-	{
-		return gCost;
-	}
+  public double getfCost() {
+    return fCost;
+  }
 
-	public void setgCost(double gCost)
-	{
-		this.gCost = gCost;
-	}
+  public double getgCost() {
+    return gCost;
+  }
 
-	public double gethCoste()
-	{
-		return hCoste;
-	}
-
-	public void sethCoste(double hCoste)
-	{
-		this.hCoste = hCoste;
-	}
-
-	private Node parent;
-	private double fCost, gCost, hCoste;
-	
-	public Node(Vector2i tile, Node parent, double gCost, double hCost)
-	{
-		this.tile = tile;
-		this.parent = parent;
-		this.gCost = gCost;
-		this.hCoste = hCost;
-		this.fCost = gCost + hCost;
-	}
-	
+  public double gethCost() {
+    return hCost;
+  }
 }

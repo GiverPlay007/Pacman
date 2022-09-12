@@ -1,6 +1,5 @@
 package me.giverplay.pacman.entities;
 
-public interface Collectible
-{
-	public void collect();
+public interface Collectible {
+  void collect();
 }

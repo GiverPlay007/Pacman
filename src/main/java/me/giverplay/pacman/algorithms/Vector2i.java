@@ -1,20 +1,26 @@
 package me.giverplay.pacman.algorithms;
 
-public class Vector2i
-{
-	public int x, y;
-	
-	public Vector2i(int x, int y)
-	{
-		this.x = x;
-		this.y = y;
-	}
-	
-	@Override
-	public boolean equals(Object object)
-	{
-		Vector2i vec = (Vector2i) object;
-		
-		return vec.x == this.x && vec.y == this.y;
-	}
+import java.util.Objects;
+
+public class Vector2i {
+  public int x, y;
+
+  public Vector2i(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if(this == o) return true;
+    if(o == null || getClass() != o.getClass()) return false;
+
+    Vector2i vector2i = (Vector2i) o;
+    return x == vector2i.x && y == vector2i.y;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(x, y);
+  }
 }
